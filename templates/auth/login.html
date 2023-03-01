@@ -14,19 +14,20 @@
         <hr>
         <div class="container">
             <h3 data-aos="fade-up" data-aos-delay="300">login</h3>
-            <form class="form-horizontal" data-aos="fade-up" data-aos-delay="400">
+            <form method="post" action="{% url 'login' %}" class="form-horizontal" data-aos="fade-up" data-aos-delay="400">
+                {% csrf_token %}
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Enter Your Name" required autofocus/><span>*</span>
+                                <input type="text" name="username" class="form-control" id="name" placeholder="Enter Your Name" required autofocus/><span>*</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                               <input type="password" class="form-control" name="psw"  placeholder="Enter your Pasword" required autofocus/><span>*</span>
+                               <input type="password" class="form-control" name="password"  placeholder="Enter your Pasword" required autofocus/><span>*</span>
                             </div>
                         </div>
                     </div>
