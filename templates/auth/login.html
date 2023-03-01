@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    LoginPage
+{% endblock title %}
+
+{% block container %}
+    <!-- register-page Section Start -->
+    <div class="login">
+        <div class="container">
+            <h5><a href="index.html">Home</a><span>/</span><a href="products.html">Category</a><span>/</span><a href="blog.html">Blog</a></h5>
+        </div>
+        <hr>
+        <div class="container">
+            <h3 data-aos="fade-up" data-aos-delay="300">login</h3>
+            <form class="form-horizontal" data-aos="fade-up" data-aos-delay="400">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Enter Your Name" required autofocus/><span>*</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                               <input type="password" class="form-control" name="psw"  placeholder="Enter your Pasword" required autofocus/><span>*</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 button-1">
+                        <button type="submit" class="btn btn-success">Login</button>
+                        <span>Not Registered? <a href="{% url 'register' %}">Register Here</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- register-page Section End -->
+{% endblock container %}

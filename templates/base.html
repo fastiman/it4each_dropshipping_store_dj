@@ -33,8 +33,13 @@
                     <ul class="text-right">
                         <li><a href="{% url 'index' %}">Home</a> </li>
                         <li><a href="{% url 'about' %}">About</a></li>
-                        <li><a href="register.html">Register</a></li>
-                        <li><a href="my_profile.html">My Account</a></li>
+                        <li><a href="{% url 'register' %}">Register</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="#">{{ user.username }}</a></li>
+                        <li><a href="{% url 'logout' %}">logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
                         <li><a href="cart.html"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span>5</span></li>
                     </ul>
                 </div>
@@ -106,10 +111,10 @@
 
                     <ul class="list-unstyled">
                         <li>
-                            <a href="my_profile.html">My Account</a>
+                            <a href="{% url 'login' %}">My Account</a>
                         </li>
                         <li>
-                            <a href="login.html">Login</a>
+                            <a href="{% url 'login' %}">Login</a>
                         </li>
                         <li>
                             <a href="my_purchases.html">my_purchases</a>
