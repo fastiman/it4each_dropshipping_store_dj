@@ -16,7 +16,19 @@
             <h3 data-aos="fade-up" data-aos-delay="300">login</h3>
             <form method="post" action="{% url 'login' %}" class="form-horizontal" data-aos="fade-up" data-aos-delay="400">
                 {% csrf_token %}
+
                 <div class="row">
+                {% for error in login_form.non_field_errors %}
+                    <div class="col-md-8 alert alert-warning fade in alert-dismissible show">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true" style="font-size:20px">×</span>
+                        </button>
+                        {{ error }}
+                    </div>
+                {% endfor %}
+                </div>
+                <div class="row">
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
