@@ -14,27 +14,28 @@
         <hr>
         <div class="container">
             <h3 data-aos="fade-up" data-aos-delay="300">Register</h3>
-            <form class="form-horizontal" data-aos="fade-up" data-aos-delay="400">
+            <form method="post" action="{% url 'register'%}" class="form-horizontal" data-aos="fade-up" data-aos-delay="400">
+                {% csrf_token %}
                 <div class="row">
-                    <div class="col-md-4">
+                    <di v class="col-md-4">
                         <div class="form-group">
+                            {% for field in user_form %}
+                            <span style="font-size:13px;">{{ field.errors }}</span>
                             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Enter Your Name" required autofocus/><span>*</span>
+
+                                <!--<p>{{ field.label_tag }}</p> -->
+                                {{ field }}<span>*</span>
+
                             </div>
+
+                            {% endfor %}
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Enter Your Name" required autofocus/><span>*</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4"></div>
                 </div>
-                <div class="row">
+
+                <div class="container row">
                     <div class="col-md-12 button-1">
-                        <button type="submit" class="btn btn-success">Login</button>
+                        <button type="submit" class="btn btn-success">Register</button>
                         <!-- <span>Not Registered? <a href="#">Register Here</a></span> -->
                     </div>
                 </div>
