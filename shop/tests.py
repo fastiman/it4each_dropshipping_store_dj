@@ -29,7 +29,8 @@ class TestDatabase(TestCase):
         self.assertTrue(user.is_superuser)
 
     def test_user_check_password(self):
-        self.assertTrue(self.user.check_password('root'))
+        # self.assertTrue(self.user.check_password('root'))
+        self.assertTrue(self.user.check_password('123'))
 
     def test_all_data(self):
         self.assertGreater(Product.objects.all().count(), 0)
@@ -37,13 +38,13 @@ class TestDatabase(TestCase):
         self.assertGreater(OrderItem.objects.all().count(), 0)
         self.assertGreater(Payment.objects.all().count(), 0)
 
-    # =================================================================
-
     def find_cart_number(self):
         cart_number = Order.objects.filter(user=self.user,
                                            status=Order.STATUS_CART
                                            ).count()
         return cart_number
+
+    # =========================== Test tasks #1 ======================================
 
     def test_function_get_cart(self):
         """Check cart number
@@ -64,6 +65,8 @@ class TestDatabase(TestCase):
         Order.get_cart(self.user)
         self.assertEqual(self.find_cart_number(), 1)
 
+    # =========================== Test tasks #2 ======================================
+
     def test_cart_older_7_days(self):
         """If cart older than 7 days it must be deleted
         1. get cart and make it older
@@ -75,6 +78,8 @@ class TestDatabase(TestCase):
         cart.save()
         cart = Order.get_cart(self.user)
         self.assertEqual((timezone.now() - cart.creation_time).days, 0)
+
+    # =========================== Test tasks #3 ======================================
 
     def test_recalculate_order_amount_after_changing_orderitem(self):
         """Checking cart amount
@@ -99,6 +104,8 @@ class TestDatabase(TestCase):
         cart = Order.get_cart(self.user)
         self.assertEqual(cart.amount, Decimal(4))
 
+    # =========================== Test tasks #4 ======================================
+
     def test_cart_status_changing_after_applying_make_order(self):
         """Check cart status changing aftter Order.make_order()
         1. Attempt to change the status of an empty cart
@@ -107,9 +114,16 @@ class TestDatabase(TestCase):
         Add Order.make_order()
         """
         # 1. Attempt to change the status of an empty cart
-        pass
+        cart = Order.get_cart(self.user)
+        cart.make_order()
+        self.assertEqual(cart.status, Order.STATUS_CART)
 
         # 2. Attempt to change the status for a non-empty cart
+        OrderItem.objects.create(order=cart, product=self.p, price=2, quantity=2)
+        cart.make_order()
+        self.assertEqual(cart.status, Order.STATUS_WAITING_FOR_PAYMENT)
+
+    # =========================== Test tasks #5 ======================================
 
     def test_method_get_amount_of_unpaid_orders(self):
         """Check @staticmethod get_amount_of_unpaid_orders() for several cases:
@@ -121,12 +135,34 @@ class TestDatabase(TestCase):
         ====================================
         Add Order.get_amount_of_unpaid_orders()
         """
+        decimal_summ = '13556'
         # 1. Before creating cart
-        pass
+        amount = Order.get_amount_of_unpaid_orders(self.user)
+        self.assertEqual(amount, Decimal(decimal_summ))
 
         # 2. After creating cart
+        cart = Order.get_cart(self.user)
+        OrderItem.objects.create(order=cart, product=self.p, price=2, quantity=2)
+        amount = Order.get_amount_of_unpaid_orders(self.user)
+        self.assertEqual(amount, Decimal(decimal_summ))
 
         # 3. After cart.make_order()
+        cart.make_order()
+        amount = Order.get_amount_of_unpaid_orders(self.user)
+        self.assertEqual(amount, Decimal(decimal_summ)+4)
+
+        # 4. After order is paid
+        cart.status = Order.STATUS_PAID
+        cart.save()
+        amount = Order.get_amount_of_unpaid_orders(self.user)
+        self.assertEqual(amount, Decimal(decimal_summ))
+
+        # 5. After delete all orders
+        Order.objects.all().delete()
+        amount = Order.get_amount_of_unpaid_orders(self.user)
+        self.assertEqual(amount, Decimal(0))
+
+    # =========================== Test tasks #6 ======================================
 
     def test_method_get_balance(self):
         """Check @staticmethod get_balance for several cases:
@@ -137,14 +173,22 @@ class TestDatabase(TestCase):
         ======================================
         Add Payment.get_balance()
         """
-        pass
+        decimal_summ = 13000
         # 1. Before adding payment
-
+        amount = Payment.get_balance(self.user)
+        self.assertEqual(amount, Decimal(decimal_summ))
         # 2. After adding payment
-
+        Payment.objects.create(user=self.user, amount=100)
+        amount = Payment.get_balance(self.user)
+        self.assertEqual(amount, Decimal(decimal_summ+100))
         # 3. After adding same payments
-
+        Payment.objects.create(user=self.user, amount=-50)
+        amount = Payment.get_balance(self.user)
+        self.assertEqual(amount, Decimal(decimal_summ+50))
         # 4. No payments
+        Payment.objects.all().delete()
+        amount = Payment.get_balance(self.user)
+        self.assertEqual(amount, Decimal(0))
 
     # ====================== test tasks #7 ======================================
 
@@ -152,13 +196,23 @@ class TestDatabase(TestCase):
         """Check auto payment after applying make_order()
         1. There is a required amount
         """
-        pass
+        decimal_summ = 13000
+        Order.objects.all().delete()
+        cart = Order.get_cart(self.user)
+        OrderItem.objects.create(order=cart, product=self.p, price=2, quantity=2)
+        self.assertEqual(Payment.get_balance(self.user), Decimal(decimal_summ))
+        cart.make_order()
+        self.assertEqual(Payment.get_balance(self.user), Decimal(decimal_summ-4))
 
     def test_auto_payment_after_apply_make_order_false(self):
         """Check auto payment after applying make_order()
         1. There isn't a required amount
         """
-        pass
+        Order.objects.all().delete()
+        cart = Order.get_cart(self.user)
+        OrderItem.objects.create(order=cart, product=self.p, price=2, quantity=50000)
+        cart.make_order()
+        self.assertEqual(Payment.get_balance(self.user), Decimal(13000))
 
     # ============================ Test tasks #8 =================
     def test_auto_payment_after_add_required_payment(self):
@@ -167,7 +221,11 @@ class TestDatabase(TestCase):
             - order must change status
             - and balance must be 0
         """
-        pass
+        decimal_summ = 13000
+        Payment.objects.create(user=self.user, amount=556)
+        self.assertEqual(Payment.get_balance(self.user), Decimal(0))
+        amount = Order.get_amount_of_unpaid_orders(self.user)
+        self.assertEqual(amount, Decimal(0))
 
     def test_auto_payment_for_earlier_order(self):
         """There is unpaid order=13556 and balance=13000
@@ -175,11 +233,24 @@ class TestDatabase(TestCase):
             - only earlier order must change status
             - and balance must be 13000+1000-13556
         """
-        pass
+        cart = Order.get_cart(self.user)
+
+        i = OrderItem.objects.create(order=cart, product=self.p, price=2, quantity=500)
+        cart.make_order()
+
+        Payment.objects.create(user=self.user, amount=1000)
+        self.assertEqual(Payment.get_balance(self.user), Decimal(444))
+        amount = Order.get_amount_of_unpaid_orders(self.user)
+        self.assertEqual(amount, Decimal(1000))
 
     def test_auto_payment_for_all_orders(self):
         """There is unpaid order=13556 and balance=13000
         After creating new order=1000 applying payment=10000:
             - all orders must be paid
         """
-        pass
+        cart = Order.get_cart(self.user)
+        OrderItem.objects.create(order=cart, product=self.p, price=500, quantity=2)
+        Payment.objects.create(user=self.user, amount=10000)
+        self.assertEqual(Payment.get_balance(self.user), Decimal(9444))
+        amount = Order.get_amount_of_unpaid_orders(self.user)
+        self.assertEqual(amount, Decimal(0))
