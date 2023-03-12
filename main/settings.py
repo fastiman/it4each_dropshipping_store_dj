@@ -134,3 +134,8 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# scraping
+URL_SCRAPING = 'https://www.boyner.com.tr/kampanya/cat--harley-davidson-c-12037419'
+# URL_SCRAPING = 'https://www.stroysa.tomsk.ru/catalog/smesiteli/'
+URL_SCRAPING_DOMAIN = 'https://www.boyner.com.tr/'

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Fill database
+{% endblock title %}
+
+{% block container %}
+    <!-- Fill Database Section Start -->
+    <div id="fill_database" style="height:80%;">
+        <div data-aos="fade-up" data-aos-delay="300" class="container min-vh-75">
+            <h3 class="d-flex justify-content-center">Fill database</h3>
+            <div class="d-flex justify-content-center p-3">
+
+                <form method="post" action="{% url 'fill_database' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-secondary btn-lg"
+                            style="font-family: 'Black Ops One', cursive; text-transform: uppercase; background-color: #ee2d27; border-color: #ee2d27;"
+                            name="fill_database" type="submit" onclick="runSpinner()">
+                        <span class="spinner spinner-border" role="status" id="spinner"
+                              style="visibility: hidden; width: 1.5rem; height: 1.5rem;"
+                              aria-hidden="true">
+                        </span>
+                        run scrapping
+                    </button>
+                </form>
+
+            </div>
+        </div>
+        {% if message %}
+        <div class="container p-3 mt-10 bg-warning text-dark">
+            <div class="row">
+                <div class="">
+                    <h4>Errors of scrapping: <br><br>
+                        <span style="color:red">{{message}}</span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <!-- Fill Database Section End -->
+
+{% endblock container %}

@@ -61,3 +61,8 @@ $('#return-to-top').click(function() {
     
     
 });
+// function run spinner on the button "run scraping" on the page fill-database.html
+function runSpinner() {
+    var spinner = document.getElementById("spinner");
+    spinner.style.visibility = 'visible'; //'hidden'
+};

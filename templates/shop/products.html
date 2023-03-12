@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Products Page
+{% endblock title %}
+
+{% block container %}
+    <!-- Products Section Start -->
+    <div class="product-page">
+        <div class="container">
+            <h5><a href="index.html">Home</a><span>/</span>
+                <a href="products.html">Category</a><span>/</span>
+                <a href="blog.html">Blog</a></h5>
+        </div>
+        <hr>
+        <div class="container">
+            <h3>Our Products</h3>
+        </div>
+    </div>
+    <section class="Latest-Products">
+        <div class="container">
+            <h3>Latest Products</h3>
+            <div class="row" data-aos="fade-up" data-aos-duration="400">
+                {% for product in object_list %}
+                <div class="col-lg-3 col-md-6 col-12 card ">
+                    <figure>
+                        <a href="#"><img src="{{ product.image_url }}" alt="" class="card-img-top img-thumbnail border-0" /></a>
+                   <!-- <div class="sales-tag">
+                            <p>Sale!</p>
+                        </div> -->
+                        <figcaption>
+
+                            <div class="row">
+                                <div class="col">
+                                    <h5><a href="product_single.html">{{ product.name }}</a></h5>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <h6>{{ product.price }} TL</h6>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex  card-footer bg-white px-0">
+
+                                <div class="col-5">{% csrf_token %}
+                                    <input type="number" name="quantity" value="1" min="1"
+                                           required id="id_quantity" class="form-control mx-2">
+                                </div>
+
+                                <div class="col">
+                                    <button type="button" class="btn btn-outline-success">
+                                        BUY NOW
+                                    </button>
+                                </div>
+                            </div>
+
+                        </figcaption>
+                    </figure>
+                </div>
+                {% endfor %}
+
+        </div>
+    </section>
+    <!-- Products Section End -->
+{% endblock container %}
