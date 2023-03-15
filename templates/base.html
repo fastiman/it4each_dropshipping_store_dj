@@ -38,14 +38,23 @@
 
                     {% if user.is_authenticated %}
                         {% if user.is_staff %}
-                            <li><a href="{% url 'fill_database' %}">Fill products</a></li>
+                            <li><a href="{% url 'fill_database' %}">
+                                <i class="fa fa-download" aria-hidden="true"></i>Fill products
+                                </a>
+                            </li>
                         {% endif %}
-                        <li><a href="{% url 'logout' %}">{{ user.username }} logout</a></li>
+                        <li><a href="{% url 'logout' %}">
+                            <i class="fa fa-user" aria-hidden="true"></i>{{ user.username }} logout
+                            </a>
+                        </li>
                     {% else %}
                         <li><a href="{% url 'register' %}">Register</a></li>
                         <li><a href="{% url 'login' %}">Login</a></li>
                     {% endif %}
-                        <li><a href="{% url 'cart_view' %}"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span>5</span></li>
+                        <li><a href="{% url 'cart_view' %}">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>Cart</a>
+<!--                            <span>{{ cart.amount }}</span>-->
+                        </li>
                     </ul>
                 </div>
             </div>

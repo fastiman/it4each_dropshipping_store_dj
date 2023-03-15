@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    CartPage
+{% endblock title %}
+
+{% block container %}
+    <!-- Cart Section Start -->
+    <section class="my-purchases">
+        <div class="container">
+            <h5><a href="index.html">Home</a><span>/</span>
+                <a href="products.html">Category</a><span>/</span>
+                <a href="blog.html">Blog</a>
+            </h5>
+        </div>
+        <hr>
+        <div class="container">
+            <h3 data-aos="fade-up" data-aos-delay="300">Your Shopping Cart</h3>
+            <p data-aos="fade-up" data-aos-delay="500">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et ex enim, aspernatur voluptate error aliquid, excepturi reiciendis adipisci autem nesciunt suscipit optio voluptates voluptatum sint, laudantium hic id doloribus provident.Maiores neque quis perspiciatis suscipit necessitatibus officia quia repudiandae, molestiae illum, consequuntur dolore optio.</p>
+            <table class="table table-bordered" data-aos="fade-up" data-aos-delay="600">
+                <thead>
+                    <tr>
+                        <th scope="col">S.No.</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                {% for item in items %}
+                <tbody>
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><a href="{% url 'shop_detail' item.pk %}" class="text-dark">{{ item.product.name }}</a></td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.amount }}</td>
+                        <td>
+                            <form method="post" action="{% url 'cart_delete_item' item.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-dark btn-sm">
+                                    <i class="fa fa-trash-o" aria-hidden="true"><span></span></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+                {% endfor %}
+                <tbody>
+                    <tr>
+                        <td colspan="4" align="right">Total amount:</td>
+                        <td>{{ cart.amount }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-right"><a class="btn btn-primary bg-success" href="{% url 'make_order' %}" role="button">check
+                out</a></div>
+        </div>
+    </section>
+    <!-- Cart Section End -->
+{% endblock container %}

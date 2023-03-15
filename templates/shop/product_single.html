@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Single Product Page
+{% endblock title %}
+
+{% block container %}
+    <!-- Single Product Section Start -->
+    <section class="single">
+        <div class="container">
+            <h5><a href="index.html">Home</a><span>/</span>
+                <a href="products.html">Category</a><span>/</span>
+                <a href="blog.html">Blog</a></h5>
+        </div>
+        <hr>
+        <div class="container">
+            <h3 data-aos="fade-up" data-aos-delay="300">Awesome Product Heading</h3>
+            <p data-aos="fade-up" data-aos-delay="400">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of </p>
+            <div class="row myrow" data-aos="fade-up" data-aos-delay="500">
+                <div class="col-12 col-md-8 slider-sec">
+                    <!-- main slider carousel -->
+
+                    <div id="myCarousel" class="carousel slide">
+                        <!-- main slider carousel items -->
+                        <div class="carousel-inner">
+                            <div class="item carousel-item active" data-slide-number="0">
+                                <img src="images/chair4.jpg" alt="image" class="img-fluid w549">
+                            </div>
+                            <div class="item carousel-item" data-slide-number="1">
+                                <img src="images/chair1.jpg" alt="image" class="img-fluid w549">
+                            </div>
+                            <div class="item carousel-item" data-slide-number="2">
+                                <img src="images/chair3.jpg" alt="image" class="img-fluid w549">
+                            </div>
+                            <div class="item carousel-item" data-slide-number="3">
+                                <img src="images/chair2.jpg" alt="image" class="img-fluid w549">
+                            </div>
+                        </div>
+                        <!-- main slider carousel nav controls -->
+                        <ul class="carousel-indicators list-inline">
+                            <li class="list-inline-item active">
+                                <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#myCarousel">
+                                    <img src="images/chair4.jpg" alt="image" class="w98">
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a id="carousel-selector-1" data-slide-to="1" data-target="#myCarousel">
+                                    <img src="images/chair1.jpg" alt="image" class="w98">
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a id="carousel-selector-2" data-slide-to="2" data-target="#myCarousel">
+                                    <img src="images/chair3.jpg" alt="image" class="w98">
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a id="carousel-selector-3" data-slide-to="3" data-target="#myCarousel">
+                                    <img src="images/chair2.jpg" alt="image" class="w98">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/main slider carousel-->
+                </div>
+                <div class="col-md-4 slider-content">
+                    <ul>
+                        <li class="mylist">
+                            <span class="myspan">Price</span>
+                            <span class="myspan">:</span>
+                            <span class="myspan">$34</span>
+                        </li>
+                        <li class="mylist1">
+                            <span class="myspan1">Now</span>&nbsp;
+                            <span class="myspan1">:</span>&nbsp;
+                            <span class="myspan1">$30</span>
+                        </li>
+                    </ul>
+
+                    <a class="b1" href="#">
+                        ADD TO CART
+                    </a>
+                    <a href="#" class="b2">
+                        BUY NOW
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Single Product Section End -->
+{% endblock container %}
